@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create New Stock</title>
+</head>
+<body>
+    <h1> New Stock Item </h1>
+
+    <form action="{{url_for('newStock', department_id=department_id )}}" method = 'POST'>
+
+    <p>Name:</p>
+
+    <input type='text' size='30' name='name'>
+
+    <p>Brand:</p>
+    <input type='text' size='30' name='brand'>
+
+    <p>Number in stock:</p>
+    <input type='number' size='3' name='num_in_stock'>
+
+    <p></p>
+    <input type='submit' value='Create'>
+
+</form>
+</body>
+</html>

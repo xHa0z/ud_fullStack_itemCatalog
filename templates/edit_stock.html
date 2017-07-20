@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Stock</title>
+</head>
+<body>
+    <form action= "{{url_for('editStockItem', department_id=department_id, stock_id=stock.id)}}" method = 'POST'>
+
+    <p>Name:</p>
+    <input type = 'text' size='30' name = 'name' placeholder = '{{stock.name}}'>
+    <p>Brand:</p>
+    <input type = 'text' size='30' name = 'brand' placeholder = '{{stock.brand}}'>
+    <p>Number In Stock:</p>
+    <input type = 'number' size='3' name = 'num_in_stock' placeholder = '{{stock.num_in_stock}}'>
+    <p></p>
+    <input type='submit' value='Edit'>
+    </form>
+    <a href= "{{url_for('departmentStock', department_id=department_id)}}">Cancel</a>
+</body>
+</html>

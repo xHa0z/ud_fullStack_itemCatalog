@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stock</title>
+</head>
+<body>
+    <div class = 'pane'>
+		<div class = 'header'>
+		<h1>{{ department.name }}</h1>
+	</div>
+
+	<a href = "{{url_for('newStock', department_id = department.id) }}">Create New Stock</a>
+
+
+        {% for i in stocks %}
+    <div>
+
+        <p>{{i.name}}</p>
+
+        <p>{{i.brand}}</p>
+
+        <p> {{i.num_in_stock}} </p>
+
+        <a href="{{url_for('editStockItem', department_id = department.id, stock_id = i.id) }}">Edit</a>
+
+        <br>
+
+        <a href = "{{url_for('deleteStockItem', department_id = department.id, stock_id = i.id ) }}">Delete</a>
+
+    </div>
+
+
+    {% endfor %}
+</body>
+
+</body>
+</html>

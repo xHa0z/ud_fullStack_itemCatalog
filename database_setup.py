@@ -27,7 +27,7 @@ class Stock(Base):
 
   id = Column(Integer, primary_key=True)
   name = Column(String(64), nullable=False)
-  description = Column(String(250))
+  brand = Column(String(64))
   num_in_stock = Column(Integer)
   department_id = Column(Integer, ForeignKey('department.id'))
   department = relationship(Department)
@@ -39,7 +39,7 @@ class Stock(Base):
     return {
       'id': self.id,
       'name': self.name,
-      'description': self.description,
+      'brand': self.brand,
       'number': self.num_in_stock,
     }
 
