@@ -14,21 +14,22 @@
 
 <div>
     <!--MESSAGE FLASHING EXAMPLE -->
-{% with messages = get_flashed_messages() %}
-{% if messages %}
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
 
-<ul>
-    {% for message in messages %}
-    <li><strong>{{message}}</strong></li>
-    {% endfor %}
-</ul>
-{% endif %}
-{% endwith %}
+    <ul>
+        {% for message in messages %}
+        <li><strong>{{message}}</strong></li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+</div>
 <div>
     <a href="{{url_for('newStock', department_id = department.id) }}">Create New Stock</a>
 </div>
 {% for i in stocks %}
-</div>
+
 
 <div>
 
