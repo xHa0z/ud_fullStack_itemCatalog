@@ -170,14 +170,14 @@ def gdisconnect():
     del login_session['username']
     del login_session['email']
     del login_session['picture']
-    response = make_response(json.dumps('Successfully disconnected.'), 200)
-    response.headers['Content-Type'] = 'application/json'
-    return response
+    # response = make_response(json.dumps('Successfully disconnected.'), 200)
+    # response.headers['Content-Type'] = 'application/json'
+    return redirect('/')
   else:
 
-    response = make_response(json.dumps('Failed to revoke token for given user.', 400))
-    response.headers['Content-Type'] = 'application/json'
-    return response
+    # response = make_response(json.dumps('Failed to revoke token for given user.', 400))
+    # response.headers['Content-Type'] = 'application/json'
+    return redirect('/login')
 
 
 # Add JSON endpoint
@@ -204,7 +204,10 @@ def departmentsJSON():
 @app.route('/departments')
 def showDepartments():
   departments = session.query(Department).all()
-  return render_template('departments.html', departments=departments)
+  if 'username' not in login_session:
+    return render_template('public_departments.html', departments=departments)
+  else:
+    return render_template('departments.html', departments=departments)
 
 
 # Create a new Department
@@ -227,7 +230,10 @@ def newDepartment():
 def departmentStock(department_id):
   department = session.query(Department).filter_by(id=department_id).one()
   stocks = session.query(Stock).filter_by(department_id=department.id)
-  return render_template('stock.html', department=department, stocks=stocks)
+  if 'username' not in login_session:
+    return render_template('public_stock.html', department=department, stocks=stocks)
+  else:
+    return render_template('stock.html', department=department, stocks=stocks)
 
 
 @app.route('/departments/<int:department_id>/new/', methods=['GET', 'POST'])
@@ -277,6 +283,8 @@ def editStockItem(department_id, stock_id):
 
 @app.route('/departments/<int:department_id>/<int:stock_id>/delete/', methods=['GET', 'POST'])
 def deleteStockItem(department_id, stock_id):
+  if 'username' not in login_session:
+    return redirect('/login')
   itemToDelete = session.query(Stock).filter_by(id=stock_id).one()
   department = session.query(Department).filter_by(id=department_id).one()
   if login_session['user_id'] != department.user_id:
@@ -286,7 +294,7 @@ def deleteStockItem(department_id, stock_id):
   if request.method == 'POST':
     session.delete(itemToDelete)
     session.commit()
-    flash("new stock item deleted")
+    flash("stock item deleted")
     return redirect(url_for('departmentStock', department_id=department_id))
   else:
     return render_template('delete_stock.html', item=itemToDelete)

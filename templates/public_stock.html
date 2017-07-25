@@ -1,0 +1,30 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+<title>Stocks</title>
+<div class="row divider green">
+		<div class="col-md-12"></div>
+	</div>
+	<div class="row banner stock">
+		<div class="col-md-11 col-md-offset-1 padding-none">
+			<h1>{{ department.name }}
+			</h1>
+
+		</div>
+	</div>
+{% for i in stocks %}
+<a href="{{url_for('departmentStock', department_id = department.id)}}">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10 stock-list">
+            <h3>Name: {{i.name}}</h3>
+            <p>Brand: {{i.brand}}</p>
+            <p class="stock-number">Number: {{i.num_in_stock}}</p>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+</a>
+{% endfor %}
+{% endblock %}
+
+

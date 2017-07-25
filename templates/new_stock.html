@@ -1,27 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Create New Stock</title>
-</head>
-<body>
-    <h1> New Stock Item </h1>
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+<title>New Stock</title>
+<div class="row divider green">
+    <div class="col-md-12"></div>
+</div>
+<div class="row banner stock">
+    <div class="col-md-11 col-md-offset-1 padding-none">
+        <h2>New Stock Item</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6 col-md-offset-1 padding-top">
+        <form action="#" method="post">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" maxlength="50" class="form-control" name="name" placeholder="Name of the stock">
 
-    <form action="{{url_for('newStock', department_id=department_id )}}" method = 'POST'>
+                <label for="brand">Brand:</label>
+                <input type="text" maxlength="50" class="form-control" name="brand"
+                       placeholder="Name of the stock brand">
 
-    <p>Name:</p>
-
-    <input type='text' size='30' name='name'>
-
-    <p>Brand:</p>
-    <input type='text' size='30' name='brand'>
-
-    <p>Number in stock:</p>
-    <input type='number' size='3' name='num_in_stock'>
-
-    <p></p>
-    <input type='submit' value='Create'>
-
-</form>
-</body>
-</html>
+                <label for="num_in_stock">Number:</label>
+                <div class="input-group">
+                    <input type="number" class="form-control" maxlength="3" name="num_in_stock" placeholder=1>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-default" id="submit">Create</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
