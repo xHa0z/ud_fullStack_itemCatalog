@@ -12,6 +12,8 @@ import httplib2
 import json
 from flask import make_response
 import requests
+from functools import wraps
+
 
 app = Flask(__name__)
 
@@ -27,6 +29,18 @@ session = DBSession()
 
 
 # User Helper Functions
+def login_requeired(f):
+  @wraps(f)
+  def decorated_function(*args, **kwargs):
+    if 'username' not in login_session:
+      flash("Authorization fail: Access denied.")
+      return redirect('/login')
+    else:
+      return f(*args, **kwargs)
+
+  return decorated_function
+
+
 
 
 def createUser(login_session):
@@ -212,6 +226,7 @@ def showDepartments():
 
 # Create a new Department
 @app.route('/departments/new/', methods=['GET', 'POST'])
+@login_requeired
 def newDepartment():
   if 'username' not in login_session:
     return redirect('login')
@@ -237,13 +252,12 @@ def departmentStock(department_id):
 
 
 @app.route('/departments/<int:department_id>/new/', methods=['GET', 'POST'])
+@login_requeired
 def newStock(department_id):
-  if 'username' not in login_session:
-    return redirect('login')
   department = session.query(Department).filter_by(id=department_id).one()
   if login_session['user_id'] != department.user_id:
-    return "<script>function myFunction() {alert('You are not authorized to edit menu items to this restaurant. " \
-           "Please create your own restaurant in order to edit items.');window.location.href = '/';}" \
+    return "<script>function myFunction() {alert('You are not authorized to create stock to this department. " \
+           "Please create your own department in order to edit stock.');window.location.href = '/';}" \
            "</script><body onload='myFunction()''>"
   if request.method == 'POST':
     newStock = Stock(
@@ -258,12 +272,13 @@ def newStock(department_id):
 
 
 @app.route('/departments/<int:department_id>/<int:stock_id>/edit/', methods=['GET', 'POST'])
+@login_requeired
 def editStockItem(department_id, stock_id):
   editedStock = session.query(Stock).filter_by(id=stock_id).one()
   department = session.query(Department).filter_by(id=department_id).one()
   if login_session['user_id'] != department.user_id:
-    return "<script>function myFunction() {alert('You are not authorized to edit menu items to this restaurant. " \
-           "Please create your own restaurant in order to edit items.');window.location.href = '/';}" \
+    return "<script>function myFunction() {alert('You are not authorized to edit stock to this department. " \
+           "Please create your own department in order to edit stock.');window.location.href = '/';}" \
            "</script><body onload='myFunction()''>"
   if request.method == 'POST':
     if request.form['name']:
@@ -282,14 +297,15 @@ def editStockItem(department_id, stock_id):
 
 
 @app.route('/departments/<int:department_id>/<int:stock_id>/delete/', methods=['GET', 'POST'])
+@login_requeired
 def deleteStockItem(department_id, stock_id):
   if 'username' not in login_session:
     return redirect('/login')
   itemToDelete = session.query(Stock).filter_by(id=stock_id).one()
   department = session.query(Department).filter_by(id=department_id).one()
   if login_session['user_id'] != department.user_id:
-    return "<script>function myFunction() {alert('You are not authorized to edit menu items to this restaurant. " \
-           "Please create your own restaurant in order to edit items.'); window.location.href = '/';}" \
+    return "<script>function myFunction() {alert('You are not authorized to delete stock to this department. " \
+           "Please create your own department in order to edit stock.'); window.location.href = '/';}" \
            "</script><body onload='myFunction()''>"
   if request.method == 'POST':
     session.delete(itemToDelete)
