@@ -55,6 +55,6 @@ class Stock(Base):
 
 
 
-engine = create_engine('sqlite:///stock_inventory.db')
+engine = create_engine('postgresql://catalog:dummy@localhost/catalog')
 
 Base.metadata.create_all(engine)
